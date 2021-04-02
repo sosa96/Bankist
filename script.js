@@ -80,7 +80,9 @@ tabsContainer.addEventListener('click', function (e) {
     .classList.add('operations__content--active');
 });
 
+///////////////////////////////////////
 // Menu fade animation
+
 const handleHover = function (e) {
   if (e.target.classList.contains('nav__link')) {
     const link = e.target;
@@ -97,3 +99,33 @@ const handleHover = function (e) {
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+///////////////////////////////////////
+// Sticky navigation
+
+// const initialCoords = section1.getBoundingClientRect();
+
+// // Scroll event is bad for perfomance
+// window.addEventListener('scroll', function () {
+//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+///////////////////////////////////////
+// Sticky navigation: Intersection Observer API
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null, // Entire viewport
+  threshold: 0, // When 0% of header is visible sth happens
+  rootMargin: `-${navHeight}px`, // Navigation appears 90px before the threshold was reached
+});
+headerObserver.observe(header);
